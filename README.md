@@ -1,7 +1,5 @@
 # Android App Folder Structure & Dependency Selection
 
-🚀 Jetpack Compose Interview-Ready Project
-
 🎯 Goal of This Project
 
 This repository demonstrates senior-level Jetpack Compose practices that interviewers explicitly look for when evaluating Android developers with strong Compose fundamentals.
