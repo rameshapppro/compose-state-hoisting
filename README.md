@@ -1,67 +1,70 @@
-# Android App Folder Structure & Dependency Selection
+# 🚀 Android App Folder Structure & Dependency Selection
 
-🎯 Goal of This Project
+## 🎯 Goal of This Project
 
 This repository demonstrates senior-level Jetpack Compose practices that interviewers explicitly look for when evaluating Android developers with strong Compose fundamentals.
 
-- What this project showcases
-- Proper state hoisting
-- Single UI state per screen
-- Lifecycle-aware state collection
-- Controlled recomposition
-- Clean, Compose-centric folder structure
-- Preview-driven development
+### ✨ What this project showcases:
+
+- ✅ Proper state hoisting
+- ✅ Single UI state per screen
+- ✅ Lifecycle-aware state collection
+- ✅ Controlled recomposition
+- ✅ Clean, Compose-centric folder structure
+- ✅ Preview-driven development
 
 ---
 
-📂  Project Structure (Compose-Centric)
+## 📂 Project Structure (Compose-Centric)
 
-```text
+```
 app/
- └── ui/
-     ├── components/
-     │   └── PrimaryButton.kt
-     ├── screens/
-     │   └── CounterScreen.kt
-     ├── state/
-     │   └── CounterUiState.kt
-     ├── theme/
-     │   ├── Color.kt
-     │   ├── Theme.kt
-     │   └── Type.kt
-     └── MainActivity.kt
+└── ui/
+    ├── components/ -> Reusable, stateless composables
+    │   └── PrimaryButton.kt
+    ├── screens/ -> Screen-level composables only
+    │   └── CounterScreen.kt
+    ├── state/ -> Explicit UI state models
+    │   └── CounterUiState.kt
+    ├── theme/ -> Design system ownership
+    │   ├── Color.kt
+    │   ├── Theme.kt
+    │   └── Type.kt
+    └── MainActivity.kt
 ```
 
-### Why this structure?
+### ❓ Why this structure?
 
-- components/ → reusable, stateless composables
-- screens/ → screen-level composables only
-- state/ → explicit UI state models
-- theme/ → design system ownership
+- **`components/`**: Reusable, stateless composables that can be used across multiple screens.
+- **`screens/`**: Screen-level composables that are responsible for the overall layout of a single screen.
+- **`state/`**: Explicit UI state models that represent the state of a screen.
+- **`theme/`**: Design system ownership, including colors, typography, and shapes.
 
-### This structure intentionally avoids
+### ❌ This structure intentionally avoids:
 
-- ❌ Business logic inside UI
-- ❌ State scattered across composables
-- ❌ Tight coupling between UI and logic
+- Business logic inside UI
+- State scattered across composables
+- Tight coupling between UI and logic
 
-This separation is critical for scalability and testability.
+> This separation is critical for scalability and testability.
 
-### 🧩 UI State Model (Single Source of Truth)
+## 🧩 UI State Model (Single Source of Truth)
 
+```kotlin
 data class CounterUiState(
-
     val count: Int = 0,
     val isEven: Boolean = true
 )
-### Why this matters
+```
 
-- One state object → predictable UI behavior
-- Easy to test
-- No hidden recomposition triggers
+### 🤔 Why this matters:
 
-#### ViewModel (State Holder, Not UI Logic)
+- **One state object**: Predictable UI behavior and easier to test.
+- **No hidden recomposition triggers**: The UI is only recomposed when the state changes.
 
+## 🤖 ViewModel (State Holder, Not UI Logic)
+
+```kotlin
 class CounterViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(CounterUiState())
@@ -76,17 +79,21 @@ class CounterViewModel : ViewModel() {
     }
 
 }
+```
 
-### Key Points
-- ViewModel owns state
-- UI is passive
-- No Compose imports inside ViewModel
-- This separation is non-negotiable at senior level.
+### 🔑 Key Points:
 
-### Stateless Screen (Compose Best Practice)
-### @Composable
+- The ViewModel owns the state.
+- The UI is passive and only observes the state.
+- No Compose imports inside the ViewModel.
 
-fun CounterScreen(uiState: CounterUiState,onIncrement: () -> Unit) {
+> This separation is non-negotiable at a senior level.
+
+## 📱 Stateless Screen (Compose Best Practice)
+
+```kotlin
+@Composable
+fun CounterScreen(uiState: CounterUiState, onIncrement: () -> Unit) {
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -111,37 +118,37 @@ fun CounterScreen(uiState: CounterUiState,onIncrement: () -> Unit) {
         )
     }
 }
+```
 
-### Why this is correct
+### 👍 Why this is correct:
 
-- No remember
-- No mutableStateOf
-- Fully driven by parameters
-- Easy to preview & test
-- This is textbook Compose design.
+- No `remember` or `mutableStateOf`.
+- Fully driven by parameters, making it easy to preview and test.
 
-### Reusable Component (Stateless by Design)
+> This is textbook Compose design.
 
+## 🧱 Reusable Component (Stateless by Design)
+
+```kotlin
 @Composable
-
 fun PrimaryButton(
-
     text: String,
     onClick: () -> Unit
 ) {
-
     Button(onClick = onClick) {
         Text(text)
     }
 }
+```
 
-- Senior Signal
-- No internal state
-- No side effects
-- Reusable across screens
+### 🌟 Senior Signal:
 
-### Lifecycle-Aware State Collection
+- No internal state or side effects.
+- Reusable across multiple screens.
 
+## 🔄 Lifecycle-Aware State Collection
+
+```kotlin
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -158,20 +165,14 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+```
 
-### Why collectAsStateWithLifecycle
+### ⚡️ Why `collectAsStateWithLifecycle`?
 
-- Prevents memory leaks
-- Stops collection in background
-- Mandatory for production Compose
+- Prevents memory leaks by stopping collection in the background.
+- Mandatory for production-ready Compose apps.
 
-### Why previews matter
+### 🖼️ Why previews matter:
 
-- Faster UI iteration
-- No emulator dependency
-- Shows Compose fluency
-
-
-
-
-
+- Faster UI iteration and no emulator dependency.
+- Shows Compose fluency.
